@@ -12,21 +12,11 @@ import (
 )
 
 // add commands flags
-var addFlagsUser = &FlagKey{
-	Key:   "user",
-	Short: "u",
-}
-var addFlagsRepo = &FlagKey{
-	Key:   "repo",
-	Short: "r",
-}
-var addFlagsToken = &FlagKey{
-	Key:   "token",
-	Short: "t",
-}
-var addFlagsImport = &FlagKey{
-	Key:   "import",
-	Short: "i",
+var addFlagImport = &FlagString{
+	Name:     "import",
+	Short:    "i",
+	DefValue: "./default.json",
+	Usage:    "set import your labels.json.",
 }
 
 // newAddCmd : returns cobra.Command. Instance for add command.
@@ -39,28 +29,28 @@ func newAddCmd() *cobra.Command {
 	}
 
 	// flags
-	addCmd.Flags().StringP(addFlagsUser.Key, addFlagsUser.Short, "", "set your github account.")
-	addCmd.Flags().StringP(addFlagsRepo.Key, addFlagsRepo.Short, "", "set your github repository.")
-	addCmd.Flags().StringP(addFlagsToken.Key, addFlagsToken.Short, "", "set your github access token.")
-	addCmd.Flags().StringP(addFlagsImport.Key, addFlagsImport.Short, "./default.json", "set import your labels.json.")
+	addCmd.Flags().StringP(commonFlagUser.Name, commonFlagUser.Short, commonFlagUser.DefValue, commonFlagUser.Usage)
+	addCmd.Flags().StringP(commonFlagRepo.Name, commonFlagRepo.Short, commonFlagRepo.DefValue, commonFlagRepo.Usage)
+	addCmd.Flags().StringP(commonFlagToken.Name, commonFlagToken.Short, commonFlagToken.DefValue, commonFlagToken.Usage)
+	addCmd.Flags().StringP(addFlagImport.Name, addFlagImport.Short, addFlagImport.DefValue, addFlagImport.Usage)
 
 	return addCmd
 }
 
 func addExcetute(cmd *cobra.Command, args []string) {
-	user, err := cmd.Flags().GetString(addFlagsUser.Key)
+	user, err := cmd.Flags().GetString(commonFlagUser.Name)
 	if err != nil {
 		fmt.Println(err)
 	}
-	repo, err := cmd.Flags().GetString(addFlagsRepo.Key)
+	repo, err := cmd.Flags().GetString(commonFlagRepo.Name)
 	if err != nil {
 		fmt.Println(err)
 	}
-	token, err := cmd.Flags().GetString(addFlagsToken.Key)
+	token, err := cmd.Flags().GetString(commonFlagToken.Name)
 	if err != nil {
 		fmt.Println(err)
 	}
-	iPath, err := cmd.Flags().GetString(addFlagsImport.Key)
+	iPath, err := cmd.Flags().GetString(addFlagImport.Name)
 	if err != nil {
 		fmt.Println(err)
 	}

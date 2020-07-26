@@ -3,6 +3,8 @@ package github
 import (
 	"fmt"
 	"testing"
+
+	"github.com/google/go-github/v32/github"
 )
 
 func Test_Success_CreateIssueLabel(t *testing.T) {
@@ -97,4 +99,47 @@ func Test_Failed_ImportIssueLabel_ErrorJsonImport(t *testing.T) {
 		t.Error("No Error was thrown. Check the processing.(xml import case)")
 	}
 	fmt.Printf("Get Error : %s\n", err)
+}
+
+func Test_Success_OptimizeLabelForOutput(t *testing.T) {
+	var id int64 = 11
+	name := "Test"
+	color := "ffffff"
+	desc := "Test Discription."
+	def := false
+	url := "https://gihub.com/sample"
+	node := "############"
+
+	tLabel := &github.Label{
+		ID:          &id,
+		Name:        &name,
+		Color:       &color,
+		Description: &desc,
+		Default:     &def,
+		URL:         &url,
+		NodeID:      &node,
+	}
+
+	OptimizeLabelForOutput(tLabel)
+	if tLabel.ID != nil {
+		t.Error("ID is not optimized. expected value is nil.")
+	}
+	if *tLabel.Name != name {
+		t.Errorf("Name optimization is not required. expected value is %s", name)
+	}
+	if *tLabel.Color != color {
+		t.Errorf("Color optimization is not required. expected value is %s", color)
+	}
+	if *tLabel.Description != desc {
+		t.Errorf("Description optimaization is not required. expected value is %s", desc)
+	}
+	if tLabel.Default != nil {
+		t.Error("Default is not optimized. expected value is nil.")
+	}
+	if tLabel.URL != nil {
+		t.Error("URL is not optimized. expected value is nil.")
+	}
+	if tLabel.NodeID != nil {
+		t.Error("NodeID is not optimized. expected value is nil.")
+	}
 }

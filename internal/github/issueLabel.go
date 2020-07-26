@@ -31,3 +31,18 @@ func ImportIssueLabels(path string) ([]github.Label, error) {
 
 	return labels, nil
 }
+
+// OptimizeLabelForOutput : optimize to a file output possible state.
+func OptimizeLabelForOutput(label *github.Label) {
+	label.ID = nil
+	label.Default = nil
+	label.URL = nil
+	label.NodeID = nil
+}
+
+// OptimizeLabelsForOutput : optimize to a file output possible state.
+func OptimizeLabelsForOutput(labels []*github.Label) {
+	for _, label := range labels {
+		OptimizeLabelForOutput(label)
+	}
+}
