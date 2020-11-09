@@ -10,16 +10,14 @@ import (
 // newRootCmd : returns cobra.Command. Instance for root command.
 func newRootCmd() *cobra.Command {
 	rootCmd := &cobra.Command{
-		Use:   "github-labels",
-		Short: "",
-		Long:  ``,
-		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Println("Call labels")
+		Use: "github-labels",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return cmd.Help()
 		},
 	}
 
+	// subcommand
 	rootCmd.AddCommand(newAddCmd())
-	rootCmd.AddCommand(newDeleteCmd())
 	rootCmd.AddCommand(newShowCmd())
 	return rootCmd
 }
@@ -27,7 +25,7 @@ func newRootCmd() *cobra.Command {
 // Execute : main function.
 func Execute() {
 	if err := newRootCmd().Execute(); err != nil {
-		fmt.Println("Error!!")
+		fmt.Println(err)
 		os.Exit(1)
 	}
 }
